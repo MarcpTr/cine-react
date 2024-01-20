@@ -4,7 +4,7 @@ import SearchSelector from "../components/SearchSelector";
 import { useState, useEffect } from "react";
 import { useNavigate, useSearchParams } from "react-router-dom";
 
-function Search() {
+function Search({title}) {
     const navigate = useNavigate();
     const [searchParams] = useSearchParams();
 
@@ -57,6 +57,8 @@ function Search() {
         if(paginationPage!=null)
         setQueryPage(paginationPage)
     },[paginationPage]);
+        document.title = title;
+
     /**************************************/
     const api_key = "b7048181b82a3678ad874fa00559a427";
     const language = "es-Es";

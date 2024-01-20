@@ -4,7 +4,7 @@ import { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
 import PageNotFound from "./PageNotFound";
 import Spinner from "../components/Spinner";
-function Info() {
+function Info({title}) {
     const params = useParams();
     const [isLoading, setIsLoading] = useState(true);
     const [isError, setIsError] = useState(false);
@@ -37,6 +37,7 @@ function Info() {
                     trailer: key,
                     overview: movie.overview,
                     backdrop_path: movie.backdrop_path,
+                    id: movie.id
                 });
 
                 setSecondaryInfo({
@@ -58,6 +59,8 @@ function Info() {
     useEffect(() => {
         fetchData();
     }, []);
+        document.title = title;
+
     return (
         <>
             {isLoading ? (

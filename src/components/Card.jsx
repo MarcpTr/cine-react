@@ -1,4 +1,4 @@
-function Card({ children, release_date, poster_path, movie_id}) {
+function Card({ name, release_date, poster_path, movie_id}) {
     return (
         <div className="rounded-lg shadow-md   shadow-gray-800   flex flex-col content-center space-y-2 lg:max-w-xs ">
             <a href={"/info/" + movie_id}>
@@ -13,10 +13,12 @@ function Card({ children, release_date, poster_path, movie_id}) {
             </a>
 
             <h1 className="px-2 font-semibold">
-                <a href={"/" + movie_id}>{children}</a>
+                <a href={"/" + movie_id}>{name}</a>
             </h1>
             <p className="px-2 pb-2">
-                {release_date.split("-").reverse().join("-")}
+                {release_date
+                    ? release_date.split("-").reverse().join("-")
+                    : ""}
             </p>
         </div>
     );

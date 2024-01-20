@@ -1,16 +1,20 @@
 import NavBarElement from "./NavBarElement";
 import movieLogo from "../assets/movie.svg";
-import { useState } from "react";
+import { useRef } from "react";
 import { Link } from "react-router-dom";
+
 function NavBar() {
     const urls = [
         { name: "inicio", url: "" },
         { name: "buscar", url: "search" },
+        { name: "perfil", url: "profile" },
     ];
-      const [navbarState, setNavbarState] = useState(true);
-      const showNavbar = () => {
-          setNavbarState(!navbarState);
-      };
+    const navbarElementsCSS="w-full block flex-grow lg:flex lg:items-center lg:w-auto";
+    const navbarElements= useRef(null);
+    const showNavbar = () => {
+        navbarElements.current.classList.toggle("hidden");
+    };
+    
     return (
         <nav className="flex items-center justify-between flex-wrap bg-teal-500 p-6">
             <Link
@@ -37,12 +41,7 @@ function NavBar() {
                     </svg>
                 </button>
             </div>
-            <div
-                className={
-                    (navbarState ? "hidden " : "visible ") +
-                    "w-full block flex-grow lg:flex lg:items-center lg:w-auto"
-                }
-            >
+            <div className={navbarElementsCSS} ref={navbarElements}>
                 <div className="text-sm lg:flex-grow space-y-0">
                     {urls.map((el, i) => (
                         <NavBarElement

@@ -1,5 +1,5 @@
 import React from "react";
-
+import AddTo from "./AddTo"
 function PrimaryInfo({ primaryInfo }) {
     const i = primaryInfo;
     console.log(i);
@@ -28,8 +28,13 @@ function PrimaryInfo({ primaryInfo }) {
             )}
 
             <div className="bg-teal-500 bg-opacity-75 max-w-3xl mx-4 mt-8 md:mx-auto p-8 mb-8 rounded-lg font-semibold">
-                <h1 className="text-center pb-8 underline">{i.title}</h1>
-                <p>{i.overview}</p>
+                <h1 className="text-center pb-4 underline">{i.title}</h1>
+                <AddTo
+                    id={i.id}
+                    posterPath={i.backdrop_path}
+                    title={i.title}
+                ></AddTo>
+                <p className="pt-4">{i.overview}</p>
             </div>
         </div>
     );

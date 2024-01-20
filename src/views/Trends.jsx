@@ -4,7 +4,7 @@ import Gallery from "../components/Gallery";
 import { useState, useEffect } from "react";
 import { useNavigate, useLocation, useSearchParams } from "react-router-dom";
 
-function Trends() {
+function Trends({title}) {
     const navigate = useNavigate();
     const [searchParams] = useSearchParams();
     const [movies, setMovies] = useState(null);
@@ -22,6 +22,7 @@ function Trends() {
         setActualPage(value);
         navigate("?time=" + timeWindow + "&page=" + value);
     };
+    document.title=title;
     const api_key = "b7048181b82a3678ad874fa00559a427";
     const language = "es-Es";
     const type_media = "movie";
