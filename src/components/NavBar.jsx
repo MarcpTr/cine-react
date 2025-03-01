@@ -9,7 +9,7 @@ function NavBar() {
         { name: "buscar", url: "search" },
         { name: "perfil", url: "profile" },
     ];
-    const navbarElementsCSS="w-full block flex-grow lg:flex lg:items-center lg:w-auto";
+    const navbarElementsCSS="w-full hidden block flex-grow lg:flex lg:items-center lg:w-auto";
     const navbarElements= useRef(null);
     const showNavbar = () => {
         navbarElements.current.classList.toggle("hidden");
