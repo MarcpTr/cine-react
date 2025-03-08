@@ -9,7 +9,7 @@ function NavBarElement({ name, url }) {
                     (isActive ? "bg-teal-400 " : undefined)
                 );
             }}
-        >
+        > 
             {name}
         </NavLink>
     );
