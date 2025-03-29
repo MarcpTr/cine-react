@@ -1,8 +1,8 @@
 # cine-react
 Esta es una aplicación web desarrollada con React, ReactDOM, React Router, Firebase, Tailwind CSS y utilizando Vite como herramienta de desarrollo. La aplicación se conecta a la API REST de themoviedb para permitir a los usuarios explorar una amplia variedad de películas, ver detalles, y gestionar sus listas de películas favoritas, vistas y pendientes.
 (https://cine-react.marcpericot.es/)
-![](https://raw.githubusercontent.com/MarcpTr/cine-react/main/index.JPG)
-![](https://raw.githubusercontent.com/MarcpTr/cine-react/main/info.JPG)
+![](https://raw.githubusercontent.com/MarcpTr/cine-react/main/index.PNG)
+![](https://raw.githubusercontent.com/MarcpTr/cine-react/main/info.PNG)
 
 
 ## Funcionalidades
