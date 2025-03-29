@@ -9,7 +9,7 @@ function NavBar() {
   return (
     <nav className="bg-gray-800 p-4"> 
         <div class="container mx-auto flex justify-between items-center">
-        <a href="#" class="text-xl font-semibold"> CineWeb
+        <a href="#" class="text-xl font-semibold"> Cine React
         </a>
       <ul class="flex space-x-6">
         {urls.map((el, i) => (
