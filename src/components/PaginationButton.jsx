@@ -1,22 +1,16 @@
-import React from 'react'
-
+import React from "react";
 function PaginationButton({ index, children, isActualPage, setCurrentPage }) {
-    const changePage = () => {
-        setCurrentPage(index);
-    };
-    return (
-        <li>
-            <button
-                onClick={changePage}
-                className={
-                    (isActualPage ? "bg-teal-200 " : "bg-white ") +
-                    " h-10 px-2 sm:px-5 text-indigo-600 transition-colors duration-150  border border-r-0 border-indigo-400 focus:shadow-outline hover:bg-indigo-100"
-                }
-            >
-                {children}
-            </button>
-        </li>
-    );
+  const changePage = () => {
+    setCurrentPage(index);
+  };
+  return (
+    <button
+      onClick={changePage}
+      className={(isActualPage ? " bg-gray-850 " : "bg-gray-800 ") + " px-4 py-2  hover:bg-gray-700" 
+      }
+    >
+      {children}
+    </button>
+  );
 }
-
-export default PaginationButton
+export default PaginationButton;

@@ -44,11 +44,10 @@ function Pagination({
                 <></>
             ) : (
                 <div className="flex justify-center pt-4">
-                    <ul className="inline-flex">
-                        <li key="prev">
-                            <button
+                    <nav className="inline-flex">
+                            <button key="prev"
                                 onClick={prevPage}
-                                className="h-10 px-1 sm:px-5  text-indigo-600 transition-colors duration-150 bg-white border border-r-0 border-indigo-600 rounded-l-lg focus:shadow-outline hover:bg-indigo-100 active:bg-indigo-300"
+                                className="px-4 py-2 bg-gray-800 hover:bg-gray-700 rounded-l-md"
                             >
                                 <svg
                                     className="w-4 h-4 fill-current"
@@ -61,13 +60,10 @@ function Pagination({
                                     ></path>
                                 </svg>
                             </button>
-                        </li>
-
                         {pages}
-                        <li key="next">
-                            <button
+                            <button key="next"
                                 onClick={nextPage}
-                                className="h-10 px-1 sm:px-5 text-indigo-600 transition-colors duration-150 bg-white border border-indigo-600 rounded-r-lg focus:shadow-outline hover:bg-indigo-100 active:bg-indigo-300"
+                                className="px-4 py-2 bg-gray-800 hover:bg-gray-700 rounded-r-md"
                             >
                                 <svg
                                     className="w-4 h-4 fill-current"
@@ -80,8 +76,7 @@ function Pagination({
                                     ></path>
                                 </svg>
                             </button>
-                        </li>
-                    </ul>
+                    </nav>
                 </div>
             )}
         </>

@@ -27,7 +27,7 @@ function PrimaryInfo({ primaryInfo }) {
                 <></>
             )}
 
-            <div className="bg-teal-500 bg-opacity-75 max-w-3xl mx-4 mt-8 md:mx-auto p-8 mb-8 rounded-lg font-semibold">
+            <div className="bg-gray-500 bg-opacity-75 max-w-3xl mx-4 mt-8 md:mx-auto p-8 mb-8 rounded-lg font-semibold">
                 <h1 className="text-center pb-4 underline">{i.title}</h1>
                 <AddTo
                     id={i.id}

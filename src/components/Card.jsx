@@ -11,13 +11,12 @@ function Card({ name, release_date, poster_path, movie_id}) {
                     alt=""
                 />
             </a>
-
             <h1 className="px-2 font-semibold">
-                <a href={"/" + movie_id}>{name}</a>
+                <a href={"/info/" + movie_id}>{name}</a>
             </h1>
             <p className="px-2 pb-2">
                 {release_date
-                    ? release_date.split("-").reverse().join("-")
+                    ? "Estreno: " + release_date.split("-").reverse().join("-")
                     : ""}
             </p>
         </div>
