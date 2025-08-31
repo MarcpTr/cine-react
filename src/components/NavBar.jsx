@@ -1,4 +1,5 @@
 import NavBarElement from "./NavBarElement";
+import { NavLink } from "react-router-dom";
 
 function NavBar() {
   const urls = [
@@ -9,8 +10,12 @@ function NavBar() {
   return (
     <nav className="bg-gray-800 p-4"> 
         <div class="container mx-auto flex justify-between items-center">
-        <a href="/" class="text-xl font-semibold"> Cine React
-        </a>
+           <NavLink
+                    to={"/"}
+                    className="text-xl font-semibold hover:text-gray-400"
+                > 
+                    Cine React
+                </NavLink>
       <ul class="flex space-x-6">
         {urls.map((el, i) => (
           <NavBarElement key={i} url={el.url} name={el.name}></NavBarElement>
