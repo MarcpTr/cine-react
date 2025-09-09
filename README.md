@@ -1,57 +1,57 @@
 # cine-react
-Esta es una aplicación web desarrollada con React, ReactDOM, React Router, Firebase, Tailwind CSS y utilizando Vite como herramienta de desarrollo. La aplicación se conecta a la API REST de themoviedb para permitir a los usuarios explorar una amplia variedad de películas, ver detalles, y gestionar sus listas de películas favoritas, vistas y pendientes.
+This is a web application developed using React, ReactDOM, React Router, Firebase, Tailwind CSS, and Vite as the development tool. The app connects to the TheMovieDB REST API, allowing users to explore a wide variety of movies, view details, and manage their lists of favorite, watched, and to-watch movies.
 (https://cine-react.marcpericot.es/)
 ![](https://raw.githubusercontent.com/MarcpTr/cine-react/main/index.PNG)
 ![](https://raw.githubusercontent.com/MarcpTr/cine-react/main/info.PNG)
 
 
-## Funcionalidades
+## Features
 
--   **Explorar películas**: Consulta películas populares, recientes y de géneros específicos mediante una API REST.
--   **Detalle de películas**: Visualiza la información detallada de cada película, incluyendo descripción, elenco, tráiler y más.
--   **Listas personalizadas**:
-    -   **Favoritas**: Guarda tus películas favoritas.
-    -   **Vistas**: Marca las películas que ya has visto.
-    -   **Pendientes**: Añade películas que planeas ver más adelante.
--   **Autenticación con Firebase**: Los usuarios pueden crear una cuenta y acceder mediante Firebase Authentication.
--   **Sincronización en la nube**: Guarda las listas de películas y preferencias del usuario en la base de datos de Firebase.
-## Tecnologías Utilizadas
+-   **Explore Movies**: Browse popular, recent, and genre-specific movies via a REST API.
+-   **Movie Details**: View detailed information about each movie, including description, cast, trailer, and more.
+-   **Custom Lists**:
+    -   **Favorites**: Save your favorite movies.
+    -   **Watched**: Mark movies you've already watched.
+    -   **Watchlist**: Add movies you plan to watch later.
+-   **Firebase Authentication**: Users can create accounts and log in using Firebase Authentication.
+-   **Cloud Sync**: Movie lists and user preferences are stored in Firebase's cloud database.
+## Technologies
 
--   **React**: Biblioteca principal para construir la interfaz de usuario.
--   **ReactDOM**: Manejador del DOM para aplicaciones de React.
--   **React Router**: Navegación y manejo de rutas entre las distintas páginas de la aplicación.
--   **Firebase**: Autenticación de usuarios y almacenamiento de listas personalizadas.
-    -   **Firebase Authentication**: Registro y login de usuarios.
-    -   **Firebase Firestore**: Almacenamiento de las listas de películas de cada usuario.
--   **Tailwind CSS**: Estilizado de componentes de manera eficiente con clases utilitarias.
--   **Vite**: Herramienta de desarrollo rápida para construir y servir el proyecto.
--   **API REST**: Se conecta a una API pública de películas (TMDB) para obtener datos actualizados.
+-   **React**: Main library for building the user interface.
+-   **ReactDOM**: DOM rendering for React applications.
+-   **React Router**: Handles routing and navigation between pages.
+-   **Firebase**: For user authentication and storing movie lists.
+    -   **Firebase Authentication**: For user sign-up and login.
+    -   **Firebase Firestore**: Stores each user’s movie lists in the cloud.
+-   **Tailwind CSS**: Utility-first CSS framework for fast UI styling.
+-   **Vite**: Fast development and build tool.
+-   **API REST**: Connects to the public TMDB movie API to fetch updated movie data.
 
-## Instalación
+## Installation
 
-1.  **Clonar el repositorio**
+1.  **Clone the repository**
     
 
     
     `git clone https://github.com/MarcpTr/cine-react/`
    ` cd cine-react` 
     
-2.  **Instalar dependencias**
+2.  **Install dependencies**
     
     `npm install` 
     
-3.  **Configurar Firebase**
+3.  **Configure Firebase**
 
--   Crea un proyecto en [Firebase](https://firebase.google.com/).
--   Configura la autenticación de Firebase (por ejemplo, con Google o Email/Contraseña).
--   Configura Firestore para almacenar las listas de películas.
--   Copia las credenciales de tu proyecto y pégalas en el archivo `src/firebase.js`.
-4. **Configurar la API de Películas**
+-   Create a project in [Firebase](https://firebase.google.com/).
+-   Set up Firebase Authentication.
+-   Set up Firestore to store the movie lists.
+-   Copy your project credentials and paste them into the `src/firebase.js` file.
+4. **Configure the Movie API**
 
--   Regístrate en la API de películas  [TMDB](https://www.themoviedb.org/).
--   Crea una clave API y configúrala en las const api_key:
+-   Sign up for the [TMDB](https://www.themoviedb.org/) movie API.
+-   Create an API key and set it in the `api_key constant`:
 `api_key=your_api_key_here`
-5. **Compilar proyecto**
+5. **Build the project**
 `
 npm run build
 `
