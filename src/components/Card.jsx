@@ -1,25 +1,34 @@
-function Card({ name, release_date, poster_path, movie_id}) {
+import { Link } from 'react-router-dom';
+import '../styles/MovieCard.css'
+
+function Card({ name, release_date, poster_path, movie_id }) {
     return (
-        <div className="rounded-lg shadow-md   shadow-gray-800   flex flex-col content-center space-y-2 lg:max-w-xs ">
-            <a href={"/info/" + movie_id}>
+        <article className="movie-card">
+            <Link
+                to={`/info/${movie_id}`}
+                className="movie-poster"
+            >
                 <img
-                    className="rounded-t-lg "
-                    src={
-                        "https://www.themoviedb.org/t/p/w600_and_h900_bestv2" +
-                        poster_path
-                    }
-                    alt=""
+                    src={"https://www.themoviedb.org/t/p/w600_and_h900_bestv2" + poster_path}
+                    alt={name}
+                    loading="lazy"
                 />
-            </a>
-            <h1 className="px-2 font-semibold">
-                <a href={"/info/" + movie_id}>{name}</a>
-            </h1>
-            <p className="px-2 pb-2">
-                {release_date
-                    ? "Estreno: " + release_date.split("-").reverse().join("-")
-                    : ""}
-            </p>
-        </div>
+            </Link>
+
+            <div className="movie-content">
+                <h2 className="movie-title">
+                    <Link to={`/info/${movie_id}`}>
+                        {name}
+                    </Link>
+                </h2>
+
+                <p className="movie-date">
+                    {release_date
+                        ? "Estreno: " + release_date.split("-").reverse().join("-")
+                        : ""}
+                </p>
+            </div>
+        </article>
     );
 }
 

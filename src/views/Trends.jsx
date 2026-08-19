@@ -3,7 +3,6 @@ import TrendSelector from "../components/TrendSelector";
 import Gallery from "../components/Gallery";
 import { useState, useEffect } from "react";
 import { useNavigate, useLocation, useSearchParams } from "react-router-dom";
-
 function Trends({title}) {
     const navigate = useNavigate();
     const [searchParams] = useSearchParams();

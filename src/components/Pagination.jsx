@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import PaginationButton from "./PaginationButton";
-
+import "../styles/Pagination.css"
 function Pagination({
     totalPages,
     maxPages,
@@ -43,11 +43,11 @@ function Pagination({
             {totalPages == 0 ? (
                 <></>
             ) : (
-                <div className="flex justify-center pt-4">
-                    <nav className="inline-flex">
+        <div className="pagination-container">
+                    <nav  className="pagination">
                             <button key="prev"
                                 onClick={prevPage}
-                                className="px-4 py-2 bg-gray-800 hover:bg-gray-700 rounded-l-md"
+                                 className="arrow"
                             >
                                 <svg
                                     className="w-4 h-4 fill-current"
@@ -63,7 +63,7 @@ function Pagination({
                         {pages}
                             <button key="next"
                                 onClick={nextPage}
-                                className="px-4 py-2 bg-gray-800 hover:bg-gray-700 rounded-r-md"
+                                 className="arrow"
                             >
                                 <svg
                                     className="w-4 h-4 fill-current"

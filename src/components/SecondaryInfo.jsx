@@ -1,74 +1,88 @@
 import notFound from "../assets/notFound.png";
-
+import "../styles/Info.css"
 function SecondaryInfo({ secondaryInfo }) {
   const i = secondaryInfo;
   console.log(i);
-  return (
-    <div className="flex flex-col sm:flex-row ">
-      <div className=" flex flex-row sm:flex-col justify-around sm:justify-normal  p-4 sm:w-1/3 md:w-1/4 lg:w-1/5">
-        <div className="space-y-1">
-          <h1 className="font-semibold">Título original</h1>
-          <p>{i.title}</p>
-          <h1 className="font-semibold">Duración</h1>
-          <p>{i.length} minutos</p>
-          {i.budget > 0 ? (
-            <>
-              <h1 className="font-semibold">Presupuesto</h1>
-              <p>{i.budget}$</p>{" "}
-            </>
-          ) : (
-            <></>
-          )}
-        </div>
-        <div>
-          <h1 className="font-semibold">Géneros</h1>
-          {i.genres.map((genre, i) => (
-            <p key={i}>{genre.name}</p>
-          ))}
-          <h1 className="font-semibold">Productoras</h1>
-          {i.producers.map((producer, i) => (
-            <p key={i}>{producer.name}</p>
-          ))}
-        </div>
+  return (<>
+    <section class="section">
+      <div class="section-title">
+        <h2>Información</h2>
       </div>
-      <div className=" p-4 sm:w-2/3 md:w-3/4 lg:w-4/5">
-        <div className="flex flex-col">
-          <div className="overflow-x-auto flex">
-            {i.cast.map((actor, i) => (
-              <div key={i} className="flex-none py-2 px-3 first:pl-6 last:pr-6">
-                <div className="flex flex-col items-center justify-center gap-3">
-                  <img
-                    className="w-18 h-18 rounded-lg"
-                    src={"https://image.tmdb.org/t/p/w185" + actor.profile_path}
-                    onError={(e) => {
-                      e.target.src = notFound;
-                      e.target.onError = null;
-                    }}
-                  />
-                  <strong className=" text-xs font-medium ">
-                    {actor.name}
-                  </strong>
-                </div>
-              </div>
-            ))}
+      <div class="details">
+        <div class="detail-card">
+          <div class="detail-row">
+            <span class="detail-label">Título original</span>
+            <span class="detail-value">{i.title}</span>
           </div>
-          <div className="overflow-x-auto flex py-2 px-3">
-            {i.videos.results.map((video, i) => (
-              <div key={i} className="mx-4">
-                <iframe
-                  allow="fullscreen"
-                  src={
-                    "https://www.youtube.com/embed/" +
-                    video.key +
-                    "?rel=0&amp;amp;controls=1&amp;amp;showinfo=0"
-                  }
-                ></iframe>
-              </div>
-            ))}
+          <div class="detail-row">
+            <span class="detail-label">Duración</span>
+            <span class="detail-value">{i.length} minutos</span>
+          </div>
+          <div class="detail-row">
+            <span class="detail-label">Presupuesto</span>
+            <span class="detail-value">{i.budget}</span>
+          </div>
+        </div>
+        <div class="detail-card">
+          <div class="detail-row">
+            <span class="detail-label">Géneros</span>
+            <div class="tags">
+              {i.genres.map((genre, i) => (
+                <span class="tag" key={i}>{genre.name}</span>
+              ))}
+            </div>
+          </div>
+          <div class="detail-row">
+            <span class="detail-label">Productoras</span>
+            <div class="tags">
+              {i.producers.map((producer, i) => (
+                <span class="tag" key={i}>{producer.name}</span>
+              ))}
+            </div>
           </div>
         </div>
       </div>
-    </div>
+    </section>
+    <section class="section">
+      <div class="section-title">
+        <h2>Reparto principal</h2>
+      </div>
+      <div class="cast">
+        {i.cast.map((actor, i) => (
+          <div key={i} class="actor">
+            <img
+              class="actor-image"
+              src={"https://image.tmdb.org/t/p/w185" + actor.profile_path}
+              onError={(e) => {
+                e.target.src = notFound;
+                e.target.onError = null;
+              }}
+            />
+            <strong>
+              {actor.name}
+            </strong>
+          </div>
+        ))}
+      </div>
+    </section> <section class="section">
+      <div class="section-title">
+        <h2>Vídeos</h2>
+      </div>
+      <div class="trailers">
+        {i.videos.results.map((video, i) => (
+          <div key={i} class="trailer">
+            <iframe
+              allow="fullscreen"
+              src={
+                "https://www.youtube.com/embed/" +
+                video.key +
+                "?rel=0&amp;amp;controls=1&amp;amp;showinfo=0"
+              }
+            ></iframe>
+          </div>
+        ))}</div>
+    </section>
+  </>
   );
 }
 

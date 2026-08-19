@@ -1,8 +1,8 @@
 import Card from "./Card";
-
+import "../styles/Gallery.css"
 function Gallery({ movies }) {
     return (
-        <div className="m-2 grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 xl:place-items-center">
+       <section class="movies-grid">
             {movies.map((movie, i) => 
                 <Card
                     key={i}
@@ -13,7 +13,7 @@ function Gallery({ movies }) {
                 >
                 </Card>
             )}
-        </div>
+        </section>
     );
 }
 export default Gallery;

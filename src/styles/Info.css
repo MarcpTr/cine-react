@@ -1,0 +1,260 @@
+.movie {
+    display: grid;
+    grid-template-columns: minmax(0, 1.7fr) minmax(320px, .9fr);
+    gap: 42px;
+    align-items: center;
+    margin-bottom: 55px;
+}
+
+.video-container {
+    position: relative;
+    aspect-ratio: 16 / 9;
+    overflow: hidden;
+    border-radius: 22px;
+    background: #000;
+    box-shadow: 0 30px 80px rgba(0, 0, 0, .6);
+    border: 1px solid var(--color-border);
+}
+
+.video-container iframe {
+    width: 100%;
+    height: 100%;
+    border: 0;
+}
+
+/* INFO PRINCIPAL */
+
+.movie-info {
+    display: flex;
+    flex-direction: column;
+    gap: 22px;
+}
+
+.movie-label {
+    color: var(--color-primary);
+    font-size: .75rem;
+    font-weight: 800;
+    letter-spacing: .18em;
+    text-transform: uppercase;
+}
+
+.movie-info h1 {
+    font-size: clamp(2.4rem, 5vw, 4.7rem);
+    line-height: .98;
+    letter-spacing: -.05em;
+    font-weight: 800;
+}
+
+.movie-info h1 span {
+    color: var(--color-primary);
+}
+
+.movie-info h1 .subtitle {
+    color: var(--color-primary);
+}
+
+.description {
+    color: var(--color-text-muted);
+    font-size: .98rem;
+    max-width: 650px;
+}
+
+/* SECCIONES */
+
+.section {
+    margin-top: 55px;
+}
+
+.section-title {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    margin-bottom: 22px;
+}
+
+.section-title h2 {
+    font-size: 1.35rem;
+    font-weight: 800;
+}
+
+.section-title::before {
+    content: "";
+    width: 4px;
+    height: 24px;
+    border-radius: 10px;
+    background: var(--color-primary);
+}
+
+/* INFORMACIÓN */
+
+.details {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 18px;
+}
+
+.detail-card {
+    background: linear-gradient(145deg, var(--color-surface-2), var(--color-surface));
+    border: 1px solid var(--color-border);
+    border-radius: 16px;
+    padding: 25px;
+}
+
+.detail-row {
+    display: flex;
+    justify-content: space-between;
+    gap: 25px;
+    padding: 15px 0;
+    border-bottom: 1px solid var(--color-border);
+}
+
+.detail-row:last-child {
+    border-bottom: 0;
+    padding-bottom: 0;
+}
+
+.detail-row:first-child {
+    padding-top: 0;
+}
+
+.detail-label {
+    color: var(--color-text-muted);
+    font-size: .85rem;
+}
+
+.detail-value {
+    text-align: right;
+    font-weight: 600;
+    font-size: .9rem;
+}
+
+.tags {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: flex-end;
+    gap: 7px;
+}
+
+.tag {
+    background: rgba(229, 28, 42, .1);
+    color: #ff6570;
+    border: 1px solid rgba(229, 28, 42, .2);
+    border-radius: 7px;
+    padding: 5px 9px;
+    font-size: .75rem;
+    font-weight: 700;
+}
+
+/* REPARTO */
+
+.cast {
+    display: flex;
+    gap: 18px;
+    overflow-x: auto;
+    scrollbar-color: var(--color-primary) transparent;
+}
+
+.actor {
+    flex: 0 0 125px;
+    text-align: center;
+}
+
+.actor-image {
+    width: 125px;
+    height: 150px;
+    object-fit: cover;
+    border-radius: 14px;
+    display: block;
+    margin-bottom: 10px;
+    border: 1px solid var(--color-border);
+    filter: saturate(.9);
+    transition: .3s ease;
+}
+
+.actor:hover .actor-image {
+    transform: translateY(-5px);
+    border-color: var(--color-primary);
+    box-shadow: 0 10px 25px rgba(229, 28, 42, .2);
+}
+
+.actor strong {
+    display: block;
+    font-size: .78rem;
+    line-height: 1.3;
+}
+
+/* TRAILERS */
+
+.trailers {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 18px;
+}
+
+.trailer {
+    aspect-ratio: 16 / 9;
+    border-radius: 15px;
+    overflow: hidden;
+    background: #000;
+    border: 1px solid var(--color-border);
+}
+
+.trailer iframe {
+    width: 100%;
+    height: 100%;
+    border: 0;
+}
+
+/* RESPONSIVE */
+
+@media (max-width: 900px) {
+    .movie {
+        grid-template-columns: 1fr;
+    }
+
+    .movie-info h1 {
+        font-size: 3rem;
+    }
+
+    .trailers {
+        grid-template-columns: 1fr;
+    }
+}
+
+@media (max-width: 650px) {
+
+    .movie {
+        gap: 25px;
+        margin-bottom: 35px;
+    }
+
+    .video-container {
+        border-radius: 14px;
+    }
+
+    .movie-info h1 {
+        font-size: 2.5rem;
+    }
+
+    .details {
+        grid-template-columns: 1fr;
+    }
+
+    .detail-row {
+        align-items: flex-start;
+    }
+
+    .tags {
+        justify-content: flex-end;
+        max-width: 190px;
+    }
+
+    .actor {
+        flex-basis: 110px;
+    }
+
+    .actor-image {
+        width: 110px;
+        height: 135px;
+    }
+}

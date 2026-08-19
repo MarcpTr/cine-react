@@ -1,4 +1,6 @@
 import React from "react";
+import "../styles/Pagination.css"
+
 function PaginationButton({ index, children, isActualPage, setCurrentPage }) {
   const changePage = () => {
     setCurrentPage(index);
@@ -6,8 +8,7 @@ function PaginationButton({ index, children, isActualPage, setCurrentPage }) {
   return (
     <button
       onClick={changePage}
-      className={(isActualPage ? " bg-gray-850 " : "bg-gray-800 ") + " px-4 py-2  hover:bg-gray-700" 
-      }
+      className={(isActualPage ? "  active " : " ")}
     >
       {children}
     </button>
