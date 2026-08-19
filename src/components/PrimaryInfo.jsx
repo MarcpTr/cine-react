@@ -3,7 +3,6 @@ import AddTo from "./AddTo"
 import "../styles/Info.css"
 function PrimaryInfo({ primaryInfo }) {
     const i = primaryInfo;
-    console.log(i);
     const bg = {
         backgroundImage:
             "url('https://image.tmdb.org/t/p/original" + i.backdrop_path + "'",
@@ -41,6 +40,7 @@ function PrimaryInfo({ primaryInfo }) {
                     id={i.id}
                     posterPath={i.backdrop_path}
                     title={i.title}
+                    release_date={i.release_date}
                 ></AddTo>
                 <p className="description">{i.overview}</p>
             </div>

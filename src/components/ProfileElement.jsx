@@ -4,34 +4,33 @@ import { SignOut, DeleteUser, SignUp } from "../firebase";
 import "../styles/Profile.css"
 function ProfileElement({ user }) {
     return (
-        <div className="p-5  flex space-x-6">
+        <div class={user ? "profile-main" : "profile-main-logged"}>
             {user ? (
                 <>
-                    <img
-                        className="rounded-full"
-                        src={user ? user.photoURL : movieLogo}
-                        alt="profile picture"
-                    ></img>
-                    <div className="flex place-items-center w-full space-x-8 ">
-                        <div>
-                            <h2 className="">{user ? user.displayName : ""}</h2>
-                            <p className="">{user ? user.email : ""}</p>
+                    <section class="profile-header">
+                        <div class="profile-user">
+                            <img
+                                class="profile-avatar"
+                                src={user ? user.photoURL : movieLogo}
+                                alt="profile picture"
+                            />
+
+                            <div class="profile-user-info">
+                                <h1>{user ? user.displayName : ""}</h1>
+                                <p>{user ? user.email : ""}</p>
+                            </div>
                         </div>
-                        <button
-                            onClick={SignOut}
-                            type="button"
-                            className="rounded-2xl bg-red-500 px-4 py-2 font-bold leading-none text-white hover:border-slate-400  hover:shadow transition duration-150"
-                        >
-                            <span>Cerrar sesion</span>
-                        </button>
-                        <button
-                            onClick={DeleteUser}
-                            type="button"
-                            className="font-bold text-red-600 rounded-2xl px-4 py-2 hover:border-slate-400  hover:bg-red-600 hover:text-white hover:shadow transition duration-150"
-                        >
-                            <span>Delete user</span>
-                        </button>
-                    </div>
+
+                        <div class="profile-actions">
+                            <button onClick={SignOut} type="button" class="logout-button">
+                                Cerrar sesión
+                            </button>
+
+                            <button onClick={DeleteUser} type="button" class="delete-button">
+                                Eliminar cuenta
+                            </button>
+                        </div>
+                    </section>
                 </>
             ) : (
                 <section class="auth-card">

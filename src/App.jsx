@@ -17,10 +17,8 @@ function App() {
         onAuthStateChanged(auth, (user) => {
             if (user == null) {
                 setUser(null);
-                console.log("NO HAY NINGUN USUARIO");
                 return null;
             }                
-            console.log("USUARIO ENCONTRADO");
             setUser(user);
         });
     }, []);

@@ -5,7 +5,7 @@ import {
     reauthenticateWithPopup,
     setPersistence,
     deleteUser,
-    signInWithPopup,getAdditionalUserInfo,
+    signInWithPopup, getAdditionalUserInfo,
     GoogleAuthProvider,
     browserLocalPersistence,
 } from "firebase/auth";
@@ -32,12 +32,11 @@ export const db = getFirestore(firebaseApp);
 export function SignUp() {
     setPersistence(auth, browserLocalPersistence).then(() => {
         signInWithPopup(auth, new GoogleAuthProvider()).then((user) => {
-             
 
-           if(getAdditionalUserInfo(user).isNewUser){
-            console.log(user.user.uid);
-            setDoc(doc(db, "Users", user.user.uid),{liked:[], watched: [], watchlist:[]});
-           }
+
+            if (getAdditionalUserInfo(user).isNewUser) {
+                setDoc(doc(db, "Users", user.user.uid), { liked: [], watched: [], watchlist: [] });
+            }
         });
     });
 }
@@ -48,54 +47,55 @@ export function DeleteUser() {
             getAuth().currentUser,
             new GoogleAuthProvider()
         ).then((credential) => {
-            deleteUser(getAuth().currentUser).then(() =>
-                console.log("user deleted")
-            );
+            deleteUser(getAuth().currentUser).then(() => console.log("user deleted"));
         });
     }
 }
 export function SignOut() {
-    signOut(auth).then(() => {});
+    signOut(auth).then(() => {  });
 }
 
 function GetRef() {
     let docRef = doc(db, "Users", getAuth().currentUser.uid);
     return docRef;
 }
-export function liked(id, posterPath, title) {
+export function liked(id, posterPath, title, release_date) {
     updateDoc(
         GetRef(),
         {
             liked: arrayUnion({
-                id: id,
-                posterPath: posterPath,
-                title: title,
+                id,
+                posterPath,
+                title,
+                release_date
             }),
         },
         { merge: true }
     );
 }
-export function watched(id, posterPath, title) {
+export function watched(id, posterPath, title, release_date) {
     updateDoc(
         GetRef(),
         {
             watched: arrayUnion({
-                id: id,
-                posterPath: posterPath,
-                title: title,
+                id,
+                posterPath,
+                title,
+                release_date
             }),
         },
         { merge: true }
     );
 }
-export function watchlist(id, posterPath, title) {
+export function watchlist(id, posterPath, title, release_date) {
     updateDoc(
         GetRef(),
         {
             watchlist: arrayUnion({
-                id: id,
-                posterPath: posterPath,
-                title: title,
+                id,
+                posterPath,
+                title,
+                release_date
             }),
         },
         { merge: true }

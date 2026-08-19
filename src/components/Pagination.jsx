@@ -29,13 +29,9 @@ function Pagination({
         )
     );
     useEffect(() => {
-        console.log(
-            "Pagination -> useEffect -> currentPage [] -> " + currentPage
-        );
         onChange(currentPage);
     }, [currentPage]);
     useEffect(() => {
-        console.log("Pagination -> useEffect -> [] -> " + paginationPage);
         setCurrentPage(1);
     }, [totalPages]);
     return (

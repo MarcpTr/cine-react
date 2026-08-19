@@ -25,19 +25,18 @@ function Info({title}) {
                     setIsError(true);
                 }
                 movie = data_movies;
-                console.log(movie);
 
                 let key = movie.videos.results[0]
                     ? movie.videos.results[0].key
                     : null;
 
-                console.log(key);
                 setPrimaryInfo({
                     title: movie.title,
                     trailer: key,
                     overview: movie.overview,
                     backdrop_path: movie.backdrop_path,
-                    id: movie.id
+                    id: movie.id,
+                    release_date: movie.release_date
                 });
 
                 setSecondaryInfo({
@@ -50,9 +49,7 @@ function Info({title}) {
                     producers: movie.production_companies,
                     cast: movie.credits.cast,
                 });
-                console.log(primaryInfo);
                 setIsLoading(false);
-                console.log("not loading");
             })
             .catch((e) => console.log("Error: " + e));
     };

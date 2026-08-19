@@ -52,7 +52,6 @@ function Trends({title}) {
     useEffect(() => {
         const page = searchParams.get("page");
         const time = searchParams.get("time");
-        console.log("page: " + page + " time:" + time);
         if (page >= firstPage && page < 10) {
             setActualPage(page);
         } else setActualPage(firstPage);

@@ -8,16 +8,12 @@ function SearchSelector({ handleSearch }) {
     };
 
     const buscar = () => {
-        console.log("searchSelector -> buscar");
         const value = getValue();
-        console.log("value: " + value)
         handleSearch(value);
     };
     const handleKeyDown = (event) => {
         if (event.key === "Enter") {
-            console.log("searchSelector -> handleKeyDown -> enter");
             const value = getValue();
-
             handleSearch(value);
         }
     };
