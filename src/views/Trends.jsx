@@ -1,6 +1,7 @@
 import Pagination from "../components/Pagination";
 import TrendSelector from "../components/TrendSelector";
 import Gallery from "../components/Gallery";
+import Spinner from "../components/Spinner";
 import { useState, useEffect } from "react";
 import { useNavigate, useLocation, useSearchParams } from "react-router-dom";
 function Trends({title}) {
@@ -71,7 +72,7 @@ function Trends({title}) {
                 firstPage={firstPage}
             />
             <TrendSelector onChange={handleTimeWindow}></TrendSelector>
-            {isLoading ? <p>Loading</p> : <Gallery movies={movies} />}
+            {isLoading ? <Spinner /> : <Gallery movies={movies} />}
         </>
     );
 }

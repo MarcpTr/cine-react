@@ -3,6 +3,7 @@ import Gallery from "../components/Gallery";
 import SearchSelector from "../components/SearchSelector";
 import { useState, useEffect } from "react";
 import { useNavigate, useSearchParams } from "react-router-dom";
+import Spinner from "../components/Spinner";
 
 function Search({ title }) {
     const navigate = useNavigate();
@@ -87,7 +88,7 @@ function Search({ title }) {
             />
             {isInit ? (
                 isLoading ? (
-                    <p>Loading</p>
+                    <Spinner />
                 ) : (
                     <>
                         <Gallery movies={movies} />

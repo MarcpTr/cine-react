@@ -1,12 +1,7 @@
-import React from "react";
 import AddTo from "./AddTo"
 import "../styles/Info.css"
 function PrimaryInfo({ primaryInfo }) {
     const i = primaryInfo;
-    const bg = {
-        backgroundImage:
-            "url('https://image.tmdb.org/t/p/original" + i.backdrop_path + "'",
-    };
     return (
         <div className="movie" >
             {i.trailer ? (
@@ -27,9 +22,9 @@ function PrimaryInfo({ primaryInfo }) {
                 <h1>
                     {i.title.includes(':') ? (
                         <>
-                            {i.title.split(':')[0]}:
-                            <span className="subtitle" >
-                                {i.title.split(':').slice(1).join(':')}
+                            {i.title.substring(0, i.title.indexOf(':'))}:
+                            <span className="subtitle">
+                                {i.title.substring(i.title.indexOf(':') + 1)}
                             </span>
                         </>
                     ) : (
@@ -47,5 +42,4 @@ function PrimaryInfo({ primaryInfo }) {
         </div>
     );
 }
-
 export default PrimaryInfo;
