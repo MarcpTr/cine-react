@@ -33,13 +33,14 @@ function PrimaryInfo({ primaryInfo }) {
                 </h1>
                 <AddTo
                     id={i.id}
-                    posterPath={i.backdrop_path}
+                    posterPath={i.poster_path}
                     title={i.title}
                     release_date={i.release_date}
-                ></AddTo>
+                />
                 <p className="description">{i.overview}</p>
             </div>
         </div>
     );
 }
 export default PrimaryInfo;
+

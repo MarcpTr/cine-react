@@ -4,56 +4,46 @@ import Trends from "./views/Trends";
 import Search from "./views/Search";
 import Info from "./views/Info";
 import PageNotFound from "./views/PageNotFound";
-import { Route, Routes } from "react-router-dom";
-import React from "react";
-import { onAuthStateChanged } from "firebase/auth";
-import { auth } from "./firebase";
-import { useEffect, useState } from "react";
-export const userContext = React.createContext();
+
+import { Routes, Route } from "react-router-dom";
 
 function App() {
-    const [user, setUser] = useState(null);
-    useEffect(() => {
-        onAuthStateChanged(auth, (user) => {
-            if (user == null) {
-                setUser(null);
-                return null;
-            }                
-            setUser(user);
-        });
-    }, []);
     return (
         <>
-            <userContext.Provider value={user}>
-                <header>
-                    <NavBar></NavBar>
-                </header>
-                <main>
-                    <Routes>
-                        <Route
-                            path="/"
-                            element={<Trends title="Tendencias" />}
-                        />
-                        <Route
-                            path="/search"
-                            element={<Search title="Buscar" />}
-                        />
-                        <Route
-                            path="/info/:movieid"
-                            element={<Info title="Informacion" />}
-                        />
-                        <Route
-                            path="/profile"
-                            element={<Profile title="Perfil" />}
-                        />
-                        <Route
-                            path="*"
-                            element={<PageNotFound title="No se encontro" />}
-                        />
-                    </Routes>
-                </main>
-            </userContext.Provider>
+            <header>
+                <NavBar />
+            </header>
+
+            <main>
+                <Routes>
+                    <Route
+                        path="/"
+                        element={<Trends title="Tendencias" />}
+                    />
+
+                    <Route
+                        path="/search"
+                        element={<Search title="Buscar" />}
+                    />
+
+                    <Route
+                        path="/info/:movieid"
+                        element={<Info title="Información" />}
+                    />
+
+                    <Route
+                        path="/profile"
+                        element={<Profile title="Perfil" />}
+                    />
+
+                    <Route
+                        path="*"
+                        element={<PageNotFound title="No se encontró" />}
+                    />
+                </Routes>
+            </main>
         </>
     );
 }
+
 export default App;

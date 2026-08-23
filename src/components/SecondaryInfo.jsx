@@ -27,8 +27,13 @@ function SecondaryInfo({ secondaryInfo }) {
           <div class="detail-row">
             <span class="detail-label">Géneros</span>
             <div class="tags">
-              {i.genres.map((genre, i) => (
-                <span class="tag" key={i}>{genre.name}</span>
+              {(i.genres || []).map((genre) => (
+                <span
+                  className="tag"
+                  key={genre.id}
+                >
+                  {genre.name}
+                </span>
               ))}
             </div>
           </div>
@@ -48,8 +53,11 @@ function SecondaryInfo({ secondaryInfo }) {
         <h2>Reparto principal</h2>
       </div>
       <div class="cast">
-        {i.cast.map((actor, i) => (
-          <div key={i} class="actor">
+        {(i.cast || []).map((actor) => (
+          <div
+            key={actor.id}
+            className="actor"
+          >
             <img
               class="actor-image"
               src={"https://image.tmdb.org/t/p/w185" + actor.profile_path}

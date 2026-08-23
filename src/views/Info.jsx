@@ -4,7 +4,7 @@ import { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
 import PageNotFound from "./PageNotFound";
 import Spinner from "../components/Spinner";
-function Info({title}) {
+function Info({ title }) {
     const params = useParams();
     const [isLoading, setIsLoading] = useState(true);
     const [isError, setIsError] = useState(false);
@@ -26,17 +26,17 @@ function Info({title}) {
                 }
                 movie = data_movies;
 
-                let key = movie.videos.results[0]
-                    ? movie.videos.results[0].key
-                    : null;
+                const key = getTrailer(movie.videos);
+
 
                 setPrimaryInfo({
                     title: movie.title,
                     trailer: key,
                     overview: movie.overview,
                     backdrop_path: movie.backdrop_path,
+                    poster_path: movie.poster_path,
                     id: movie.id,
-                    release_date: movie.release_date
+                    release_date: movie.release_date,
                 });
 
                 setSecondaryInfo({
@@ -56,7 +56,7 @@ function Info({title}) {
     useEffect(() => {
         fetchData();
     }, []);
-        document.title = title;
+    document.title = title;
 
     return (
         <>
@@ -77,3 +77,27 @@ function Info({title}) {
 }
 
 export default Info;
+function getTrailer(videos) {
+    if (!videos?.results) {
+        return null;
+    }
+
+    const trailer = videos.results.find(
+        (video) =>
+            video.site === "YouTube" &&
+            video.type === "Trailer" &&
+            video.official === true
+    );
+
+    if (trailer) {
+        return trailer.key;
+    }
+
+    const fallback = videos.results.find(
+        (video) =>
+            video.site === "YouTube" &&
+            video.type === "Trailer"
+    );
+
+    return fallback?.key || null;
+}

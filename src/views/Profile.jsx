@@ -1,88 +1,70 @@
-import React, { useEffect, useState, useContext } from "react";
-import { userContext } from "../App";
+import React, { useEffect, useState } from "react";
+
+import { useAuth } from "../contexts/AuthContext";
+import { useUserMovies } from "../hooks/useUserMovies";
+
 import ProfileElement from "../components/ProfileElement";
-import { db } from "../firebase";
-import { getDoc, doc } from "firebase/firestore";
 import Gallery from "../components/Gallery";
 import Spinner from "../components/Spinner";
-
 function Profile({ title }) {
-    const user = useContext(userContext);
+    const { user, loading: authLoading } = useAuth();
 
-    const [userData, setUserData] = useState(null);
-    const [movies, setMovies] = useState(null);
+    const {
+        movies,
+        loading: moviesLoading,
+        error,
+    } = useUserMovies(user);
+
     const [activeTab, setActiveTab] = useState("liked");
-    const [isLoading, setIsLoading] = useState(true);
+
+    useEffect(() => {
+        document.title = title;
+    }, [title]);
 
     const tabs = [
         {
             id: "liked",
             label: "Me gusta",
-            movies: movies?.liked || [],
+            movies: movies.liked,
         },
         {
             id: "watched",
             label: "Vistas",
-            movies: movies?.watched || [],
+            movies: movies.watched,
         },
         {
             id: "watchlist",
             label: "Mi lista",
-            movies: movies?.watchlist || [],
+            movies: movies.watchlist,
         },
     ];
 
     const activeMovies =
         tabs.find((tab) => tab.id === activeTab)?.movies || [];
 
-    useEffect(() => {
-        document.title = title;
-
-        const loadProfile = async () => {
-            if (!user) {
-                setUserData(null);
-                setMovies(null);
-                setIsLoading(false);
-                return;
-            }
-
-            setUserData({
-                photoURL: user.photoURL,
-                displayName: user.displayName,
-                email: user.email,
-            });
-
-            setIsLoading(true);
-
-            try {
-                const docRef = doc(db, "Users", user.uid);
-                const documentSnapshot = await getDoc(docRef);
-
-                if (documentSnapshot.exists()) {
-                    setMovies(documentSnapshot.data());
-                } else {
-                    setMovies(null);
-                }
-            } catch (error) {
-                console.error("Error cargando el perfil:", error);
-                setMovies(null);
-            } finally {
-                setIsLoading(false);
-            }
-        };
-
-        loadProfile();
-    }, [user, title]);
+    if (authLoading) {
+        return <Spinner />;
+    }
 
     return (
         <>
-            <ProfileElement user={userData} />
+            <ProfileElement user={user} />
 
-            {isLoading ? (
+            {user && moviesLoading ? (
                 <Spinner />
-            ) : user && movies ? (
+            ) : user && error ? (
+                <div className="error-message">
+                    <p>
+                        No se pudieron cargar tus listas.
+                    </p>
+                </div>
+            ) : user ? (
                 <>
-                    <section className="profile-tabs" role="tablist">
+                    <section
+                        className="profile-tabs"
+                        role="tablist"
+                        aria-label="Listas de películas"
+                    >
                         {tabs.map((tab) => (
                             <button
                                 key={tab.id}
