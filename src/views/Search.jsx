@@ -64,13 +64,14 @@ function Search({ title }) {
     const fetchData = () => {
         setIsInit(true);
         setIsLoading(true);
-        const url = `${API_URL}${type_media}?&query=${searchQuery}&language=${language}&api_key=${api_key}&page=${queryPage}`;
+        const url = `http://localhost:8083/api/data/search?query=${searchQuery}&page=${queryPage}`;
+        console.log(url)
         if (searchQuery != null && searchQuery != "")
             fetch(url)
                 .then((response) => response.json())
                 .then((data_movies) => {
                     setTotalPages(data_movies.total_pages);
-                    setMovies(data_movies.results);
+                    setMovies(data_movies.data.content.results);
                     setIsLoading(false);
                 })
                 .catch((e) => console.log("Error: " + e));

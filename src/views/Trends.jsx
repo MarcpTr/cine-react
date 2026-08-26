@@ -4,7 +4,7 @@ import Gallery from "../components/Gallery";
 import Spinner from "../components/Spinner";
 import { useState, useEffect } from "react";
 import { useNavigate, useLocation, useSearchParams } from "react-router-dom";
-function Trends({title}) {
+function Trends({ title }) {
     const navigate = useNavigate();
     const [searchParams] = useSearchParams();
     const [movies, setMovies] = useState(null);
@@ -22,26 +22,24 @@ function Trends({title}) {
         setActualPage(value);
         navigate("?time=" + timeWindow + "&page=" + value);
     };
-    document.title=title;
-    const api_key = "b7048181b82a3678ad874fa00559a427";
-    const language = "es-Es";
-    const type_media = "movie";
-    const API_URL = `https://api.themoviedb.org/3/trending/`;
-    const firstPage=1;
-    const lastPage=10;
+    document.title = title;
+ ;
+    const API_URL = `http://localhost:8083/api/data/trending`;
+    const firstPage = 1;
+    const lastPage = 10;
     const fetchData = () => {
-          if (actualPage < firstPage && actualPage > lastPage) {
-              setActualPage(1);
-          }
+        if (actualPage < firstPage && actualPage > lastPage) {
+            setActualPage(1);
+        }
 
-        const url = `${API_URL}${type_media}/${timeWindow}?language=${language}&api_key=${api_key}&page=${Number(
+        const url = `${API_URL}?period=${timeWindow.toUpperCase()}&page=${Number(
             actualPage
         )}`;
         console.log(url);
         fetch(url)
             .then((response) => response.json())
             .then((data_movies) => {
-                setMovies(data_movies.results);
+                setMovies(data_movies.data.content.results);
                 setIsLoading(false);
             })
             .catch((e) => console.log("Error: " + e));
@@ -58,7 +56,7 @@ function Trends({title}) {
         } else setActualPage(firstPage);
         if (time == "day" || time == "week") {
             setTimeWindow(time);
-        }else setTimeWindow("day")
+        } else setTimeWindow("day")
 
         fetchData();
     }, []);

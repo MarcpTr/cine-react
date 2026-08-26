@@ -12,9 +12,8 @@ function Info({ title }) {
     const [primaryInfo, setPrimaryInfo] = useState(null);
     const [secondaryInfo, setSecondaryInfo] = useState(null);
 
-    const api_key = "b7048181b82a3678ad874fa00559a427";
-    const language = "es-Es";
-    const url = `https://api.themoviedb.org/3/movie/${params.movieid}?api_key=${api_key}&language=${language}&append_to_response=videos,credits`;
+   
+    const url = `http://localhost:8083/api/data/movie/${params.movieid}`;
     let movie;
     const fetchData = () => {
         fetch(url)
@@ -24,7 +23,7 @@ function Info({ title }) {
                     setIsLoading(false);
                     setIsError(true);
                 }
-                movie = data_movies;
+                movie = data_movies.data.content;
 
                 const key = getTrailer(movie.videos);
 
