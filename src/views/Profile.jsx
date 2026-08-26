@@ -71,9 +71,8 @@ function Profile({ title }) {
                                 type="button"
                                 role="tab"
                                 aria-selected={activeTab === tab.id}
-                                className={`profile-tab ${
-                                    activeTab === tab.id ? "active" : ""
-                                }`}
+                                className={`profile-tab ${activeTab === tab.id ? "active" : ""
+                                    }`}
                                 onClick={() => setActiveTab(tab.id)}
                             >
                                 <span>{tab.label}</span>

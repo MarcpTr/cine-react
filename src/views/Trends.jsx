@@ -2,64 +2,165 @@ import Pagination from "../components/Pagination";
 import TrendSelector from "../components/TrendSelector";
 import Gallery from "../components/Gallery";
 import Spinner from "../components/Spinner";
-import { useState, useEffect } from "react";
-import { useNavigate, useLocation, useSearchParams } from "react-router-dom";
+
+import {
+    useEffect,
+    useState,
+} from "react";
+
+import {
+    useNavigate,
+    useSearchParams,
+} from "react-router-dom";
+
+import {
+    getTrendingMovies,
+} from "../services/api";
+
 function Trends({ title }) {
     const navigate = useNavigate();
-    const [searchParams] = useSearchParams();
-    const [movies, setMovies] = useState(null);
+    const [searchParams] =
+        useSearchParams();
 
-    const [isLoading, setIsLoading] = useState(true);
+    const [movies, setMovies] =
+        useState([]);
 
-    const [timeWindow, setTimeWindow] = useState("day");
-    const [actualPage, setActualPage] = useState(1);
+    const [isLoading, setIsLoading] =
+        useState(true);
 
-    const handleTimeWindow = (value) => {
-        setTimeWindow(value);
-        navigate("?time=" + value + "&page=" + actualPage);
-    };
-    const handlePage = (value) => {
-        setActualPage(value);
-        navigate("?time=" + timeWindow + "&page=" + value);
-    };
-    document.title = title;
- ;
-    const API_URL = `http://localhost:8083/api/data/trending`;
+    const [error, setError] =
+        useState(null);
+
+    const [timeWindow, setTimeWindow] =
+        useState("day");
+
+    const [actualPage, setActualPage] =
+        useState(1);
+
     const firstPage = 1;
     const lastPage = 10;
-    const fetchData = () => {
-        if (actualPage < firstPage && actualPage > lastPage) {
-            setActualPage(1);
+
+    useEffect(() => {
+        document.title = title;
+    }, [title]);
+
+    useEffect(() => {
+        const time =
+            searchParams.get("time");
+
+        const page =
+            Number(
+                searchParams.get("page")
+            );
+
+        const validTime =
+            time === "day" ||
+            time === "week";
+
+        const validPage =
+            Number.isInteger(page) &&
+            page >= firstPage &&
+            page <= lastPage;
+
+        setTimeWindow(
+            validTime
+                ? time
+                : "day"
+        );
+
+        setActualPage(
+            validPage
+                ? page
+                : firstPage
+        );
+    }, [searchParams]);
+
+    useEffect(() => {
+        let cancelled = false;
+
+        async function loadTrending() {
+            setIsLoading(true);
+            setError(null);
+
+            try {
+                const data =
+                    await getTrendingMovies(
+                        timeWindow,
+                        actualPage
+                    );
+
+                if (cancelled) {
+                    return;
+                }
+
+                setMovies(
+                    data?.content?.results ||
+                    []
+                );
+            } catch (error) {
+                if (cancelled) {
+                    return;
+                }
+
+                console.error(
+                    "Error cargando tendencias:",
+                    error
+                );
+
+                setMovies([]);
+                setError(error);
+            } finally {
+                if (!cancelled) {
+                    setIsLoading(false);
+                }
+            }
         }
 
-        const url = `${API_URL}?period=${timeWindow.toUpperCase()}&page=${Number(
-            actualPage
-        )}`;
-        console.log(url);
-        fetch(url)
-            .then((response) => response.json())
-            .then((data_movies) => {
-                setMovies(data_movies.data.content.results);
-                setIsLoading(false);
-            })
-            .catch((e) => console.log("Error: " + e));
-    };
-    useEffect(() => {
-        fetchData();
+        loadTrending();
+
+        return () => {
+            cancelled = true;
+        };
     }, [timeWindow, actualPage]);
 
-    useEffect(() => {
-        const page = searchParams.get("page");
-        const time = searchParams.get("time");
-        if (page >= firstPage && page < 10) {
-            setActualPage(page);
-        } else setActualPage(firstPage);
-        if (time == "day" || time == "week") {
-            setTimeWindow(time);
-        } else setTimeWindow("day")
+    const handleTimeWindow = (
+        value
+    ) => {
+        if (
+            value !== "day" &&
+            value !== "week"
+        ) {
+            return;
+        }
 
-        fetchData();
-    }, []);
+        setTimeWindow(value);
+        setActualPage(1);
+
+        navigate(
+            `/?time=${value}&page=1`
+        );
+    };
+
+    const handlePage = (
+        value
+    ) => {
+        const page = Number(value);
+
+        if (
+            !Number.isInteger(page) ||
+            page < firstPage ||
+            page > lastPage
+        ) {
+            return;
+        }
+
+        setActualPage(page);
+
+        navigate(
+            `/?time=${timeWindow}&page=${page}`
+        );
+    };
+
     return (
         <>
             <Pagination
@@ -69,8 +170,27 @@ function Trends({ title }) {
                 maxPages={lastPage}
                 firstPage={firstPage}
             />
-            <TrendSelector onChange={handleTimeWindow}></TrendSelector>
-            {isLoading ? <Spinner /> : <Gallery movies={movies} />}
+
+            <TrendSelector
+                onChange={handleTimeWindow}
+            />
+
+            {isLoading ? (
+                <Spinner />
+            ) : error ? (
+                <div
+                    className="error-message"
+                    role="alert"
+                >
+                    <p>
+                        {error.message}
+                    </p>
+                </div>
+            ) : (
+                <Gallery
+                    movies={movies}
+                />
+            )}
         </>
     );
 }

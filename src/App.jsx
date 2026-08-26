@@ -18,27 +18,39 @@ function App() {
                 <Routes>
                     <Route
                         path="/"
-                        element={<Trends title="Tendencias" />}
+                        element={
+                            <Trends title="Tendencias" />
+                        }
                     />
 
                     <Route
                         path="/search"
-                        element={<Search title="Buscar" />}
+                        element={
+                            <Search title="Buscar" />
+                        }
                     />
 
                     <Route
                         path="/info/:movieid"
-                        element={<Info title="Información" />}
+                        element={
+                            <Info title="Información" />
+                        }
                     />
 
                     <Route
                         path="/profile"
-                        element={<Profile title="Perfil" />}
+                        element={
+                            <Profile title="Perfil" />
+                        }
                     />
 
                     <Route
                         path="*"
-                        element={<PageNotFound title="No se encontró" />}
+                        element={
+                            <PageNotFound
+                                title="No se encontró"
+                            />
+                        }
                     />
                 </Routes>
             </main>
