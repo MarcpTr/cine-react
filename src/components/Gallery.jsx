@@ -1,20 +1,26 @@
 import Card from "./Card";
-import "../styles/Gallery.css"
-function Gallery({ movies }) {
+import "../styles/Gallery.css";
+
+function Gallery({ movies = [] }) {
+   
     return (
-       <section class="movies-grid">
-            {movies.map((movie, i) => 
+        <section className="movies-grid">
+            {movies.map((movie) => (
                 <Card
-                    key={i}
-                    poster_path={movie.poster_path || movie.posterPath}
-                    release_date={movie.release_date}
-                    movie_id={movie.id}
-                    name={movie.title}
-                >
-                </Card>
-            )}
+                    key={movie.id}
+                    posterPath={
+                        movie.poster_path ||
+                        movie.posterPath
+                    }
+                    releaseDate={
+                        movie.release_date
+                    }
+                    movieId={movie.id}
+                    title={movie.title}
+                />
+            ))}
         </section>
     );
 }
-export default Gallery;
 
+export default Gallery;

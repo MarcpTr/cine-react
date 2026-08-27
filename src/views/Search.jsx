@@ -3,7 +3,10 @@ import Gallery from "../components/Gallery";
 import SearchSelector from "../components/SearchSelector";
 import Spinner from "../components/Spinner";
 
-import { useEffect, useState } from "react";
+import {
+    useEffect,
+    useState,
+} from "react";
 
 import {
     useNavigate,
@@ -17,13 +20,14 @@ import {
 function Search({ title }) {
     const navigate = useNavigate();
 
-    const [totalPages, setTotalPages] = useState(0);
-
     const [searchParams] =
         useSearchParams();
 
     const [movies, setMovies] =
         useState([]);
+
+    const [totalPages, setTotalPages] =
+        useState(0);
 
     const [isLoading, setIsLoading] =
         useState(false);
@@ -37,9 +41,9 @@ function Search({ title }) {
     const pageParam =
         Number(searchParams.get("page"));
 
-    const page =
+    const currentPage =
         Number.isInteger(pageParam) &&
-            pageParam >= 1
+        pageParam >= 1
             ? pageParam
             : 1;
 
@@ -48,16 +52,17 @@ function Search({ title }) {
     }, [title]);
 
     useEffect(() => {
+        let cancelled = false;
+
         if (!query) {
             setMovies([]);
+            setTotalPages(0);
             setError(null);
             setIsLoading(false);
             return;
         }
 
-        let cancelled = false;
-
-        async function loadMovies() {
+        async function loadSearch() {
             setIsLoading(true);
             setError(null);
 
@@ -65,7 +70,7 @@ function Search({ title }) {
                 const data =
                     await searchMovies(
                         query,
-                        page
+                        currentPage
                     );
 
                 if (cancelled) {
@@ -82,7 +87,6 @@ function Search({ title }) {
                 setTotalPages(
                     content?.total_pages || 0
                 );
-
             } catch (error) {
                 if (cancelled) {
                     return;
@@ -94,6 +98,7 @@ function Search({ title }) {
                 );
 
                 setMovies([]);
+                setTotalPages(0);
                 setError(error);
             } finally {
                 if (!cancelled) {
@@ -102,12 +107,12 @@ function Search({ title }) {
             }
         }
 
-        loadMovies();
+        loadSearch();
 
         return () => {
             cancelled = true;
         };
-    }, [query, page]);
+    }, [query, currentPage]);
 
     const handleSearch = (value) => {
         const newQuery =
@@ -124,18 +129,14 @@ function Search({ title }) {
         );
     };
 
-    const handlePage = (value) => {
-        const newPage =
-            Number(value);
+    const handlePage = (page) => {
+        const newPage = Number(page);
 
         if (
             !Number.isInteger(newPage) ||
-            newPage < 1
+            newPage < 1 ||
+            newPage > totalPages
         ) {
-            return;
-        }
-
-        if (!query) {
             return;
         }
 
@@ -145,7 +146,6 @@ function Search({ title }) {
             )}&page=${newPage}`
         );
     };
-
 
     return (
         <>
@@ -157,24 +157,28 @@ function Search({ title }) {
                 <Pagination
                     firstPage={1}
                     onChange={handlePage}
-                    paginationPage={page}
+                    paginationPage={currentPage}
                     totalPages={totalPages}
                     maxPages={10}
                 />
             )}
 
-            {!query ? null : isLoading ? (
+            {isLoading ? (
                 <Spinner />
             ) : error ? (
                 <div
                     className="error-message"
                     role="alert"
                 >
-                    <p>{error.message}</p>
+                    <p>
+                        {error.message}
+                    </p>
                 </div>
-            ) : (
-                <Gallery movies={movies} />
-            )}
+            ) : query ? (
+                <Gallery
+                    movies={movies}
+                />
+            ) : null}
         </>
     );
 }

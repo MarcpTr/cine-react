@@ -3,10 +3,7 @@ import TrendSelector from "../components/TrendSelector";
 import Gallery from "../components/Gallery";
 import Spinner from "../components/Spinner";
 
-import {
-    useEffect,
-    useState,
-} from "react";
+import { useEffect, useState } from "react";
 
 import {
     useNavigate,
@@ -19,61 +16,36 @@ import {
 
 function Trends({ title }) {
     const navigate = useNavigate();
-    const [searchParams] =
-        useSearchParams();
+    const [searchParams] = useSearchParams();
 
-    const [movies, setMovies] =
-        useState([]);
+    const [movies, setMovies] = useState([]);
 
-    const [isLoading, setIsLoading] =
-        useState(true);
-
-    const [error, setError] =
-        useState(null);
-
-    const [timeWindow, setTimeWindow] =
-        useState("day");
-
-    const [actualPage, setActualPage] =
-        useState(1);
+    const [isLoading, setIsLoading] = useState(true);
+    const [error, setError] = useState(null);
 
     const firstPage = 1;
-    const lastPage = 10;
+    const maxPaginationPages = 10;
+
+    const [totalPages, setTotalPages] =
+        useState(0);
+
+    const timeParam = searchParams.get("time");
+    const pageParam = Number(searchParams.get("page"));
+
+    const timeWindow =
+        timeParam === "week"
+            ? "week"
+            : "day";
+
+    const actualPage =
+        Number.isInteger(pageParam) &&
+            pageParam >= firstPage
+            ? pageParam
+            : firstPage;
 
     useEffect(() => {
         document.title = title;
     }, [title]);
-
-    useEffect(() => {
-        const time =
-            searchParams.get("time");
-
-        const page =
-            Number(
-                searchParams.get("page")
-            );
-
-        const validTime =
-            time === "day" ||
-            time === "week";
-
-        const validPage =
-            Number.isInteger(page) &&
-            page >= firstPage &&
-            page <= lastPage;
-
-        setTimeWindow(
-            validTime
-                ? time
-                : "day"
-        );
-
-        setActualPage(
-            validPage
-                ? page
-                : firstPage
-        );
-    }, [searchParams]);
 
     useEffect(() => {
         let cancelled = false;
@@ -83,19 +55,23 @@ function Trends({ title }) {
             setError(null);
 
             try {
-                const data =
-                    await getTrendingMovies(
-                        timeWindow,
-                        actualPage
-                    );
+                const data = await getTrendingMovies(
+                    timeWindow,
+                    actualPage
+                );
 
                 if (cancelled) {
                     return;
                 }
 
+                const content = data?.content;
+
                 setMovies(
-                    data?.content?.results ||
-                    []
+                    content?.results || []
+                );
+
+                setTotalPages(
+                    content?.total_pages || 0
                 );
             } catch (error) {
                 if (cancelled) {
@@ -108,6 +84,7 @@ function Trends({ title }) {
                 );
 
                 setMovies([]);
+                setTotalPages(0);
                 setError(error);
             } finally {
                 if (!cancelled) {
@@ -123,9 +100,7 @@ function Trends({ title }) {
         };
     }, [timeWindow, actualPage]);
 
-    const handleTimeWindow = (
-        value
-    ) => {
+    const handleTimeWindow = (value) => {
         if (
             value !== "day" &&
             value !== "week"
@@ -133,28 +108,21 @@ function Trends({ title }) {
             return;
         }
 
-        setTimeWindow(value);
-        setActualPage(1);
-
         navigate(
             `/?time=${value}&page=1`
         );
     };
 
-    const handlePage = (
-        value
-    ) => {
+    const handlePage = (value) => {
         const page = Number(value);
 
         if (
             !Number.isInteger(page) ||
             page < firstPage ||
-            page > lastPage
+            page > totalPages
         ) {
             return;
         }
-
-        setActualPage(page);
 
         navigate(
             `/?time=${timeWindow}&page=${page}`
@@ -163,16 +131,15 @@ function Trends({ title }) {
 
     return (
         <>
+            <TrendSelector
+                onChange={handleTimeWindow}
+            />
             <Pagination
                 onChange={handlePage}
                 paginationPage={actualPage}
-                totalPages={lastPage}
-                maxPages={lastPage}
+                totalPages={totalPages}
+                maxPages={maxPaginationPages}
                 firstPage={firstPage}
-            />
-
-            <TrendSelector
-                onChange={handleTimeWindow}
             />
 
             {isLoading ? (
@@ -182,14 +149,9 @@ function Trends({ title }) {
                     className="error-message"
                     role="alert"
                 >
-                    <p>
-                        {error.message}
-                    </p>
+                    <p>{error.message}</p>
                 </div>
-            ) : (
-                <Gallery
-                    movies={movies}
-                />
+            ) : (<Gallery movies={movies} />
             )}
         </>
     );

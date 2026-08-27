@@ -1,56 +1,80 @@
+import PaginationButton from "./PaginationButton";
 import "../styles/Pagination.css";
 
 function Pagination({
     totalPages = 0,
     maxPages = 10,
     firstPage = 1,
-    paginationPage = 1,
+    paginationPage = firstPage,
     onChange,
 }) {
-    const currentPage =
-        Number(paginationPage) || firstPage;
-
     if (totalPages <= 0) {
         return null;
     }
 
-    const lastPage =
-        Math.min(
-            totalPages,
-            firstPage + maxPages - 1
+    const currentPage = Math.min(
+        Math.max(
+            Number(paginationPage) || firstPage,
+            firstPage
+        ),
+        totalPages
+    );
+
+    let startPage =
+        Math.floor(
+            (currentPage - firstPage) / maxPages
+        ) *
+            maxPages +
+        firstPage;
+
+    let endPage = Math.min(
+        startPage + maxPages - 1,
+        totalPages
+    );
+
+    if (
+        endPage - startPage + 1 < maxPages
+    ) {
+        startPage = Math.max(
+            firstPage,
+            endPage - maxPages + 1
         );
+    }
 
     const pages = Array.from(
         {
             length:
-                lastPage - firstPage + 1,
+                endPage - startPage + 1,
         },
-        (_, index) =>
-            firstPage + index
+        (_, index) => {
+            const page =
+                startPage + index;
+
+            return (
+                <PaginationButton
+                    key={page}
+                    index={page}
+                    isActualPage={
+                        page === currentPage
+                    }
+                    onChange={onChange}
+                >
+                    {page}
+                </PaginationButton>
+            );
+        }
     );
 
-    const goToPage = (page) => {
-        if (
-            page < firstPage ||
-            page > totalPages ||
-            page === currentPage
-        ) {
-            return;
+    const goToPreviousPage = () => {
+        if (currentPage > firstPage) {
+            onChange(currentPage - 1);
         }
-
-        onChange(page);
     };
 
-    const previousPage = () => {
-        goToPage(
-            currentPage - 1
-        );
-    };
-
-    const nextPage = () => {
-        goToPage(
-            currentPage + 1
-        );
+    const goToNextPage = () => {
+        if (currentPage < totalPages) {
+            onChange(currentPage + 1);
+        }
     };
 
     return (
@@ -61,11 +85,11 @@ function Pagination({
             >
                 <button
                     type="button"
-                    onClick={previousPage}
-                    className="arrow"
+                    onClick={goToPreviousPage}
                     disabled={
-                        currentPage <= firstPage
+                        currentPage === firstPage
                     }
+                    className="arrow"
                     aria-label="Página anterior"
                 >
                     <svg
@@ -74,42 +98,20 @@ function Pagination({
                         aria-hidden="true"
                     >
                         <path
-                            d="M12.707 5.293a1 1 0 010 1.414L9.414 10l3.293 3.293a1 1 0 01-1.414 1.414l-4-4a1 1 0 010-1.414l4-4a1 1 0 010-1.414z"
-                            clipRule="evenodd"
-                            fillRule="evenodd"
+                            d="M12.707 5.293a1 1 0 010 1.414L9.414 10l3.293 3.293a1 1 0 01-1.414 1.414l-4-4a1 1 0 010-1.414l4-4a1 1 0 011.414 0z"
                         />
                     </svg>
                 </button>
 
-                {pages.map((page) => (
-                    <button
-                        key={page}
-                        type="button"
-                        onClick={() =>
-                            goToPage(page)
-                        }
-                        className={
-                            page === currentPage
-                                ? "active"
-                                : ""
-                        }
-                        aria-current={
-                            page === currentPage
-                                ? "page"
-                                : undefined
-                        }
-                    >
-                        {page}
-                    </button>
-                ))}
+                {pages}
 
                 <button
                     type="button"
-                    onClick={nextPage}
-                    className="arrow"
+                    onClick={goToNextPage}
                     disabled={
-                        currentPage >= totalPages
+                        currentPage === totalPages
                     }
+                    className="arrow"
                     aria-label="Página siguiente"
                 >
                     <svg
@@ -118,9 +120,7 @@ function Pagination({
                         aria-hidden="true"
                     >
                         <path
-                            d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 011.414 0l-4 4a1 1 0 01-1.414 0z"
-                            clipRule="evenodd"
-                            fillRule="evenodd"
+                            d="M7.293 14.707a1 1 0 010 1.414L10.586 10l-3.293 3.293a1 1 0 01-1.414 1.414l4-4a1 1 0 010-1.414l4-4a1 1 0 011.414 0z"
                         />
                     </svg>
                 </button>

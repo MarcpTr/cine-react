@@ -1,20 +1,54 @@
 import PrimaryInfo from "../components/PrimaryInfo";
 import SecondaryInfo from "../components/SecondaryInfo";
-import { useState, useEffect } from "react";
-import { useParams } from "react-router-dom";
-import PageNotFound from "./PageNotFound";
 import Spinner from "../components/Spinner";
-import {
-    getMovie,
-} from "../services/api";
+import PageNotFound from "./PageNotFound";
+
+import { useEffect, useState } from "react";
+import { useParams } from "react-router-dom";
+
+import { getMovie } from "../services/api";
+
+function getTrailer(videos) {
+    const results = videos?.results || [];
+
+    const officialTrailer = results.find(
+        (video) =>
+            video.site === "YouTube" &&
+            video.type === "Trailer" &&
+            video.official === true
+    );
+
+    if (officialTrailer) {
+        return officialTrailer.key;
+    }
+
+    const trailer = results.find(
+        (video) =>
+            video.site === "YouTube" &&
+            video.type === "Trailer"
+    );
+
+    return trailer?.key || null;
+}
+
 function Info({ title }) {
-    const params = useParams();
-    const [isLoading, setIsLoading] = useState(true);
-    const [isError, setIsError] = useState(false);
+    const { movieid } = useParams();
 
-    const [primaryInfo, setPrimaryInfo] = useState(null);
-    const [secondaryInfo, setSecondaryInfo] = useState(null);
+    const [primaryInfo, setPrimaryInfo] =
+        useState(null);
 
+    const [secondaryInfo, setSecondaryInfo] =
+        useState(null);
+
+    const [isLoading, setIsLoading] =
+        useState(true);
+
+    const [isError, setIsError] =
+        useState(false);
+
+    useEffect(() => {
+        document.title = title;
+    }, [title]);
 
     useEffect(() => {
         let cancelled = false;
@@ -25,16 +59,13 @@ function Info({ title }) {
 
             try {
                 const data =
-                    await getMovie(
-                        params.movieid
-                    );
+                    await getMovie(movieid);
 
                 if (cancelled) {
                     return;
                 }
 
-                const movie =
-                    data?.content;
+                const movie = data?.content;
 
                 if (!movie) {
                     throw new Error(
@@ -42,15 +73,13 @@ function Info({ title }) {
                     );
                 }
 
-                const trailer =
-                    getTrailer(
-                        movie.videos
-                    );
-
                 setPrimaryInfo({
                     title: movie.title,
-                    trailer,
-                    overview: movie.overview,
+                    trailer: getTrailer(
+                        movie.videos
+                    ),
+                    overview:
+                        movie.overview,
                     backdrop_path:
                         movie.backdrop_path,
                     poster_path:
@@ -64,7 +93,9 @@ function Info({ title }) {
                     title:
                         movie.original_title,
                     videos:
-                        movie.videos,
+                        movie.videos || {
+                            results: [],
+                        },
                     length:
                         movie.runtime,
                     lenguage:
@@ -90,6 +121,8 @@ function Info({ title }) {
                     error
                 );
 
+                setPrimaryInfo(null);
+                setSecondaryInfo(null);
                 setIsError(true);
             } finally {
                 if (!cancelled) {
@@ -98,55 +131,38 @@ function Info({ title }) {
             }
         }
 
+        if (!movieid) {
+            setIsLoading(false);
+            setIsError(true);
+            return;
+        }
+
         loadMovie();
 
         return () => {
             cancelled = true;
         };
-    }, [params.movieid]);
-    document.title = title;
+    }, [movieid]);
+
+    if (isLoading) {
+        return <Spinner />;
+    }
+
+    if (isError) {
+        return <PageNotFound />;
+    }
 
     return (
         <>
-            {isLoading ? (
-                <Spinner />
-            ) : isError ? (
-                <PageNotFound />
-            ) : (
-                <>
-                    <PrimaryInfo primaryInfo={primaryInfo}></PrimaryInfo>
-                    <SecondaryInfo
-                        secondaryInfo={secondaryInfo}
-                    ></SecondaryInfo>
-                </>
-            )}
+            <PrimaryInfo
+                primaryInfo={primaryInfo}
+            />
+
+            <SecondaryInfo
+                secondaryInfo={secondaryInfo}
+            />
         </>
     );
 }
 
 export default Info;
-function getTrailer(videos) {
-    const results =
-        videos?.results || [];
-
-    const officialTrailer =
-        results.find(
-            (video) =>
-                video.site === "YouTube" &&
-                video.type === "Trailer" &&
-                video.official === true
-        );
-
-    if (officialTrailer) {
-        return officialTrailer.key;
-    }
-
-    const trailer =
-        results.find(
-            (video) =>
-                video.site === "YouTube" &&
-                video.type === "Trailer"
-        );
-
-    return trailer?.key || null;
-}

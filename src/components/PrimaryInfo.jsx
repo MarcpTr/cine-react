@@ -1,46 +1,66 @@
-import AddTo from "./AddTo"
-import "../styles/Info.css"
+import AddTo from "./AddTo";
+import "../styles/Info.css";
+
 function PrimaryInfo({ primaryInfo }) {
-    const i = primaryInfo;
+    const movie = primaryInfo;
+
+    if (!movie) {
+        return null;
+    }
+
+    const titleParts =
+        movie.title?.split(":");
+
     return (
-        <div className="movie" >
-            {i.trailer ? (
+        <div className="movie">
+            {movie.trailer && (
                 <div className="video-container">
                     <iframe
+                        title={`Tráiler de ${movie.title}`}
                         allow="fullscreen"
                         src={
-                            "https://www.youtube.com/embed/" +
-                            i.trailer +
-                            "?rel=0&amp;amp;controls=1&amp;amp;showinfo=0"
+                            `https://www.youtube.com/embed/${movie.trailer}` +
+                            "?rel=0&controls=1"
                         }
-                    ></iframe>
+                    />
                 </div>
-            ) : (
-                <></>
             )}
+
             <div className="movie-info">
                 <h1>
-                    {i.title.includes(':') ? (
+                    {titleParts?.length > 1 ? (
                         <>
-                            {i.title.substring(0, i.title.indexOf(':'))}:
+                            {titleParts[0]}:
                             <span className="subtitle">
-                                {i.title.substring(i.title.indexOf(':') + 1)}
+                                {titleParts
+                                    .slice(1)
+                                    .join(":")}
                             </span>
                         </>
                     ) : (
-                        i.title
+                        movie.title
                     )}
                 </h1>
+
                 <AddTo
-                    id={i.id}
-                    posterPath={i.poster_path}
-                    title={i.title}
-                    release_date={i.release_date}
+                    id={movie.id}
+                    posterPath={
+                        movie.poster_path
+                    }
+                    title={movie.title}
+                    releaseDate={
+                        movie.release_date
+                    }
                 />
-                <p className="description">{i.overview}</p>
+
+                {movie.overview && (
+                    <p className="description">
+                        {movie.overview}
+                    </p>
+                )}
             </div>
         </div>
     );
 }
-export default PrimaryInfo;
 
+export default PrimaryInfo;

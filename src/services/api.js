@@ -1,19 +1,11 @@
-const API_BASE_URL = "http://localhost:8083/api/data";
+const API_BASE_URL =
+    "https://api-cine.marcpericot.es/api/data";
 
-async function request(
-    endpoint,
-    options = {}
-) {
-    const response = await fetch(
-        `${API_BASE_URL}${endpoint}`,
-        {
-            ...options,
-            headers: {
-                "Content-Type": "application/json",
-                ...options.headers,
-            },
-        }
-    );
+async function request(endpoint) {
+    const response =
+        await fetch(
+            `${API_BASE_URL}${endpoint}`
+        );
 
     let result;
 
@@ -26,10 +18,20 @@ async function request(
     }
 
     if (!response.ok) {
-        throw new Error(
+        const error = new Error(
             result?.error?.message ||
             `Error HTTP ${response.status}`
         );
+
+        error.code =
+            result?.error?.code ||
+            "HTTP_ERROR";
+
+        error.details =
+            result?.error?.details ||
+            null;
+
+        throw error;
     }
 
     if (!result.success) {
@@ -52,38 +54,6 @@ async function request(
     return result.data;
 }
 
-export async function getMovie(movieId) {
-    if (!movieId) {
-        throw new Error(
-            "El ID de la película es obligatorio."
-        );
-    }
-
-    return request(
-        `/movie/${encodeURIComponent(movieId)}`
-    );
-}
-
-export async function searchMovies(
-    searchQuery,
-    page = 1
-) {
-    const query = searchQuery.trim();
-
-    if (!query) {
-        return null;
-    }
-
-    const params = new URLSearchParams({
-        query,
-        page: String(page),
-    });
-
-    return request(
-        `/search?${params.toString()}`
-    );
-}
-
 export async function getTrendingMovies(
     timeWindow,
     page = 1
@@ -91,12 +61,34 @@ export async function getTrendingMovies(
     const period =
         timeWindow.toUpperCase();
 
-    const params = new URLSearchParams({
-        period,
-        page: String(page),
-    });
+    const params =
+        new URLSearchParams({
+            period,
+            page: String(page),
+        });
 
     return request(
         `/trending?${params.toString()}`
+    );
+}
+
+export async function searchMovies(
+    searchQuery,
+    page = 1
+) {
+    const params =
+        new URLSearchParams({
+            query: searchQuery.trim(),
+            page: String(page),
+        });
+
+    return request(
+        `/search?${params.toString()}`
+    );
+}
+
+export async function getMovie(movieId) {
+    return request(
+        `/movie/${encodeURIComponent(movieId)}`
     );
 }

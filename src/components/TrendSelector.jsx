@@ -17,12 +17,12 @@ function TrendSelector({ onChange }) {
     }
     return (
         <>
-            <section class="movies-header">
+            <section className="movies-header">
                 <h1>Los más populares {timeText}</h1>
                 <p>
                     Descubre las películas que están destacando actualmente.
                 </p>
-                <div class="filters">
+                <div className="filters">
                     <button onClick={day} className={`filter-button ${timeWindow === "day" ? "active" : ""}`}>
                         Películas del Día
                     </button>

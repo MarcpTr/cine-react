@@ -18,12 +18,12 @@ function SearchSelector({ handleSearch }) {
         }
     };
     return (
-        <div class="search-container">
-            <label for="default-search" class="search-label">
+        <div className="search-container">
+            <label htmlFor="default-search" className="search-label">
                 Buscar
             </label>
-            <div class="search-box">
-                <div class="search-icon" aria-hidden="true">
+            <div className="search-box">
+                <div className="search-icon" aria-hidden="true">
                     <svg viewBox="0 0 24 24">
                         <path d="m20.7 19.3-4.2-4.2a7.5 7.5 0 1 0-1.4 1.4l4.2 4.2a1 1 0 0 0 1.4-1.4ZM5 10.5a5.5 5.5 0 1 1 11 0 5.5 5.5 0 0 1-11 0Z"></path>
                     </svg>
@@ -32,14 +32,14 @@ function SearchSelector({ handleSearch }) {
                     onKeyDown={handleKeyDown}
                     ref={inputRef}
                     type="search"
-                    class="search-input"
+                    className="search-input"
                     placeholder="Buscar..."
                     required
                 />
                 <button
                     type="button"
                     onClick={buscar}
-                    class="search-button">
+                    className="search-button">
                     Buscar
                 </button>
             </div>
